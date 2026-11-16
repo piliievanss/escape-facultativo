@@ -1,0 +1,26 @@
+================================================================================
+                    CARPETA DE ASSETS DE MATERIALES Y ÚTILES
+================================================================================
+
+En esta carpeta podés agregar o reemplazar las imágenes de los materiales
+que se piden y se recolectan en el juego:
+
+1. Tijeras:
+   - Nombre recomendado: tijera.png (o tijera.jpg, tijera.jpeg, tijera.webp)
+
+2. Regla:
+   - Nombre recomendado: regla.png (o regla.jpg, regla.jpeg, regla.webp)
+
+3. Lápiz:
+   - Nombre recomendado: lapiz.png (o lapiz.jpg, lapiz.jpeg, lapiz.webp)
+
+4. Telgopor:
+   - Nombre recomendado: telgopor.png (o telgopor.jpg, telgopor.jpeg, telgopor.webp)
+
+5. Cartón:
+   - Nombre recomendado: carton.png (o carton.jpg, carton.jpeg, carton.webp)
+
+¡Cualquier imagen que coloques aquí se reflejará automáticamente en el juego,
+tanto en el taller (como textura de los objetos 3D) como en la mochila del
+jugador y en los pedidos de los compañeros!
+================================================================================

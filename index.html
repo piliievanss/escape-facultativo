@@ -16,7 +16,6 @@
     <script>
         const profFormats = [
             'assets/images/profesor/profesor.png',
-            'assets/images/profesor/Retrato_gamer_con_iconos_pixelados-removebg-preview.png',
             'assets/images/profesor/profesor.jpg',
             'assets/images/profesor/profesor.jpeg',
             'assets/images/profesor/profesor.webp'
@@ -39,7 +38,7 @@
 
         function goToMainMenu() {
             try {
-                if (typeof window.initAudio === 'function') window.initAudio();
+                if (typeof initAudio === 'function') initAudio();
                 if (typeof playSound === 'function') playSound('pickup');
             } catch (e) {}
             const introScreen = document.getElementById('intro-screen');
@@ -229,6 +228,7 @@
         <span><kbd class="bg-gray-800 px-1.5 py-0.5 rounded text-white font-mono border border-gray-600">↓ / C</kbd> Agacharse</span>
         <span><kbd class="bg-gray-800 px-1.5 py-0.5 rounded text-white font-mono border border-gray-600">↑ + W</kbd> Empujar</span>
         <span><kbd class="bg-gray-800 px-1.5 py-0.5 rounded text-white font-mono border border-gray-600">Click</kbd> Agarrar/Hablar</span>
+        <span><kbd class="bg-gray-800 px-1.5 py-0.5 rounded text-white font-mono border border-gray-600">Z</kbd> Tirar material</span>
     </div>
 
     <!-- CARTEL/BOCADILLO EN COMPAÑERO -->
@@ -305,7 +305,7 @@
                         <i class="fa-solid fa-quote-left text-sm text-indigo-600"></i> Mensaje del Titular
                     </div>
                     <p class="text-gray-950 text-lg sm:text-xl font-black leading-snug tracking-tight">
-                        “Hoy la facultad pesa más que la mochila. ¡Escapen mientras puedan!”
+                        “Hola, hoy es un dia de muchas entregas ¡Buena suerte!”
                     </p>
                 </div>
 
@@ -342,6 +342,28 @@
                 <button id="btn-menu-controls" class="w-full bg-gray-800/90 hover:bg-gray-700 text-gray-200 border border-gray-600 font-bold text-base py-3 rounded-xl shadow transition flex items-center justify-center gap-3 cursor-pointer">
                     <i class="fa-solid fa-gamepad"></i> CONTROLES
                 </button>
+                <button id="btn-menu-quit" class="w-full bg-rose-950/80 hover:bg-rose-900 text-rose-200 border border-rose-700/80 font-bold text-base py-3 rounded-xl shadow transition flex items-center justify-center gap-3 cursor-pointer">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> SALIR
+                </button>
+            </div>
+
+            <!-- VISTA: CONFIRMAR SALIDA -->
+            <div id="view-quit-confirm" class="hidden flex-col items-center gap-4 text-center py-4">
+                <div class="w-16 h-16 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-3xl border border-rose-500/40">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-black text-white">¿Seguro que quieres salir?</h3>
+                    <p class="text-xs text-gray-400 mt-1">Se cerrará la partida actual.</p>
+                </div>
+                <div class="flex gap-3 w-full mt-2">
+                    <button id="btn-quit-no" class="w-1/2 bg-gray-800 hover:bg-gray-700 text-gray-200 font-bold py-3 rounded-xl border border-gray-600 text-base cursor-pointer transition">
+                        No
+                    </button>
+                    <button id="btn-quit-yes" class="w-1/2 bg-rose-600 hover:bg-rose-500 text-white font-black py-3 rounded-xl shadow-lg text-base cursor-pointer transition">
+                        Sí
+                    </button>
+                </div>
             </div>
 
             <!-- VISTA: SELECCIÓN DE PERSONAJE -->
@@ -370,7 +392,7 @@
                         </div>
                     </button>
 
-                    <!-- Tarjeta Personaje 2: Martu -->
+                    <!-- Tarjeta Personaje 2: Martu / Marina -->
                     <button id="btn-select-p2" class="char-card border-2 border-gray-700 bg-gray-900/60 opacity-75 hover:opacity-100 p-2 sm:p-2.5 rounded-xl flex flex-col items-center gap-1.5 transition hover:scale-[1.01] cursor-pointer shadow-md group">
                         <div class="w-20 h-28 sm:w-24 sm:h-32 bg-gray-950 rounded-xl border border-rose-500/60 overflow-hidden relative shadow group-hover:border-rose-400 transition-all">
                             <!-- Retrato Realista de Martu -->
@@ -384,7 +406,7 @@
                             <i class="fa-solid fa-bolt mr-1 text-rose-400"></i> Ansiosa
                         </span>
                         <div class="text-[10px] text-rose-100/90 bg-rose-950/40 p-1.5 rounded-lg border border-rose-500/30 text-center leading-snug">
-                            Al quedar poco tiempo, <b>¡la ansiedad hace que vea borroso por instantes!</b>
+                            La ansiedad hace que <b>¡vea borroso por 2 segundos cada 10 segundos!</b>
                         </div>
                     </button>
                 </div>
@@ -458,6 +480,10 @@
                         <span class="font-bold text-amber-400">Agarrar / Hablar:</span>
                         <span><kbd class="bg-gray-700 px-1.5 py-0.5 rounded text-white font-mono">Click Izquierdo</kbd> apuntando de cerca</span>
                     </div>
+                    <div class="flex justify-between items-center border-b border-gray-700/60 pb-1.5">
+                        <span class="font-bold text-amber-400">Tirar Material:</span>
+                        <span><kbd class="bg-gray-700 px-1.5 py-0.5 rounded text-white font-mono">Z</kbd> Suelta un útil de la mochila al piso</span>
+                    </div>
                     <div class="flex justify-between items-center">
                         <span class="font-bold text-amber-400">Empujar Estructuras:</span>
                         <span><kbd class="bg-gray-700 px-1.5 py-0.5 rounded text-white font-mono">Flecha Arriba + W</kbd> cerca de mesas</span>
@@ -476,8 +502,13 @@
             </div>
             <h2 class="text-3xl font-extrabold text-amber-400 mb-2">¡FACULTAD ESCAPADA!</h2>
             <p class="text-xl font-bold text-gray-100 mb-6">"Felicidades ya te podes ir a dormir"</p>
-            <button id="btn-restart-win" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-black text-lg py-3.5 rounded-xl shadow-lg transition transform hover:scale-[1.02]">
-                VOLVER A JUGAR
+            <button id="btn-restart-win" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-black text-lg py-3.5 rounded-xl shadow-lg transition transform hover:scale-[1.02] cursor-pointer flex items-center justify-center gap-2">
+                <i class="fa-solid fa-users"></i>
+                <span>VOLVER A JUGAR</span>
+            </button>
+            <button id="btn-win-menu" class="w-full mt-3 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-600 font-bold text-base py-3 rounded-xl shadow transition transform hover:scale-[1.02] cursor-pointer flex items-center justify-center gap-2">
+                <i class="fa-solid fa-house"></i>
+                <span>Volver al menu principal</span>
             </button>
         </div>
     </div>
@@ -506,7 +537,6 @@
         let selectedCharacter = 1; // 1: Personaje 1, 2: Personaje 2
 
         function playSound(type) {
-            if (!audioCtx && typeof window.initAudio === 'function') window.initAudio();
             if (!audioCtx || soundVolume <= 0) return;
             try {
                 const osc = audioCtx.createOscillator();
@@ -566,9 +596,162 @@
                     gain.gain.setValueAtTime(vol * 1.2, now);
                     gain.gain.linearRampToValueAtTime(0.01, now + 0.16);
                     osc.start(now); osc.stop(now + 0.16);
+                } else if (type === 'bump_uy') {
+                    // Sonido cómico vocalizado tipo "¡Uy!" al tropezar o chocar con un compañero
+                    const oscUy = audioCtx.createOscillator();
+                    const filterUy = audioCtx.createBiquadFilter();
+                    const gainUy = audioCtx.createGain();
+
+                    oscUy.type = 'triangle';
+                    oscUy.frequency.setValueAtTime(340, now);
+                    oscUy.frequency.exponentialRampToValueAtTime(160, now + 0.18);
+
+                    filterUy.type = 'bandpass';
+                    filterUy.frequency.setValueAtTime(680, now);
+                    filterUy.frequency.exponentialRampToValueAtTime(400, now + 0.18);
+                    filterUy.Q.setValueAtTime(3.8, now);
+
+                    gainUy.gain.setValueAtTime(0, now);
+                    gainUy.gain.linearRampToValueAtTime(vol * 1.4, now + 0.02);
+                    gainUy.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+
+                    oscUy.connect(filterUy);
+                    filterUy.connect(gainUy);
+                    gainUy.connect(audioCtx.destination);
+
+                    oscUy.start(now); oscUy.stop(now + 0.19);
+                } else if (type === 'student_murmur') {
+                    // Murmullo de diálogo estilo Simlish / Animal Crossing cuando alguien pide materiales
+                    const notes = [392.0, 440.0, 523.25, 493.88, 587.33];
+                    notes.forEach((freq, idx) => {
+                        const noteTime = now + idx * 0.055;
+                        const mOsc = audioCtx.createOscillator();
+                        const mGain = audioCtx.createGain();
+                        const mFilter = audioCtx.createBiquadFilter();
+
+                        mOsc.type = 'triangle';
+                        mOsc.frequency.setValueAtTime(freq * (0.95 + Math.random() * 0.1), noteTime);
+
+                        mFilter.type = 'bandpass';
+                        mFilter.frequency.setValueAtTime(750, noteTime);
+                        mFilter.Q.setValueAtTime(4.0, noteTime);
+
+                        mGain.gain.setValueAtTime(0, noteTime);
+                        mGain.gain.linearRampToValueAtTime(vol * 0.85, noteTime + 0.01);
+                        mGain.gain.exponentialRampToValueAtTime(0.005, noteTime + 0.05);
+
+                        mOsc.connect(mFilter);
+                        mFilter.connect(mGain);
+                        mGain.connect(audioCtx.destination);
+
+                        mOsc.start(noteTime);
+                        mOsc.stop(noteTime + 0.052);
+                    });
                 }
             } catch (e) {
                 console.error(e);
+            }
+        }
+
+        /* --- SISTEMA DE MÚSICA DE FONDO (SINTETIZADA LO-FI UNIVERSITARIA) --- */
+        let musicGainNode = null;
+        let musicInterval = null;
+        let isMusicPlaying = false;
+
+        function initMusic() {
+            if (!audioCtx) return;
+            if (!musicGainNode) {
+                musicGainNode = audioCtx.createGain();
+                musicGainNode.gain.setValueAtTime(musicVolume * 0.22, audioCtx.currentTime);
+                musicGainNode.connect(audioCtx.destination);
+            }
+        }
+
+        function setMusicVolume(val) {
+            musicVolume = val;
+            if (musicGainNode && audioCtx) {
+                musicGainNode.gain.setValueAtTime(musicVolume * 0.22, audioCtx.currentTime);
+            }
+        }
+
+        function startBackgroundMusic() {
+            if (!audioCtx) return;
+            initMusic();
+            if (isMusicPlaying) return;
+            isMusicPlaying = true;
+
+            const chords = [
+                [293.66, 349.23, 440.00, 523.25], // Dm7
+                [196.00, 293.66, 392.00, 493.88], // G7
+                [261.63, 329.63, 392.00, 493.88], // Cmaj7
+                [220.00, 261.63, 329.63, 392.00]  // Am7
+            ];
+            const bassNotes = [146.83, 98.00, 130.81, 110.00];
+
+            let step = 0;
+            function playMusicBeat() {
+                if (!isMusicPlaying || !audioCtx || musicVolume <= 0) return;
+                const now = audioCtx.currentTime;
+                const chordIdx = step % chords.length;
+                const chord = chords[chordIdx];
+                const bass = bassNotes[chordIdx];
+                step++;
+
+                // Acorde cálido de sintetizador / piano eléctrico
+                chord.forEach((freq, i) => {
+                    try {
+                        const chordOsc = audioCtx.createOscillator();
+                        const chordGain = audioCtx.createGain();
+                        const chordFilt = audioCtx.createBiquadFilter();
+
+                        chordOsc.type = (i % 2 === 0) ? 'sine' : 'triangle';
+                        chordOsc.frequency.setValueAtTime(freq, now + i * 0.035);
+
+                        chordFilt.type = 'lowpass';
+                        chordFilt.frequency.setValueAtTime(750, now);
+
+                        chordGain.gain.setValueAtTime(0, now);
+                        chordGain.gain.linearRampToValueAtTime(0.045, now + 0.12);
+                        chordGain.gain.exponentialRampToValueAtTime(0.001, now + 2.3);
+
+                        chordOsc.connect(chordFilt);
+                        chordFilt.connect(chordGain);
+                        chordGain.connect(musicGainNode);
+
+                        chordOsc.start(now);
+                        chordOsc.stop(now + 2.35);
+                    } catch(e) {}
+                });
+
+                // Línea de bajo lo-fi universitario
+                try {
+                    const bOsc = audioCtx.createOscillator();
+                    const bGain = audioCtx.createGain();
+                    bOsc.type = 'sine';
+                    bOsc.frequency.setValueAtTime(bass, now);
+
+                    bGain.gain.setValueAtTime(0, now);
+                    bGain.gain.linearRampToValueAtTime(0.075, now + 0.08);
+                    bGain.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
+
+                    bOsc.connect(bGain);
+                    bGain.connect(musicGainNode);
+
+                    bOsc.start(now);
+                    bOsc.stop(now + 2.25);
+                } catch(e) {}
+            }
+
+            playMusicBeat();
+            if (musicInterval) clearInterval(musicInterval);
+            musicInterval = setInterval(playMusicBeat, 2400);
+        }
+
+        function stopBackgroundMusic() {
+            isMusicPlaying = false;
+            if (musicInterval) {
+                clearInterval(musicInterval);
+                musicInterval = null;
             }
         }
 
@@ -621,6 +804,9 @@
         let timeRemaining = 60;
         let timerInterval = null;
         let isTimerRunning = false;
+        let marinaBlurElapsed = 0;
+        let nextMarinaBlurInterval = 10; // Cada 10 segundos
+        let lastBumpSoundTime = 0;
 
         // Teclas
         const keys = {
@@ -641,34 +827,31 @@
             tex.wrapT = THREE.RepeatWrapping;
             tex.repeat.set(repeatX, repeatY);
 
-            function tryIndex(idx) {
+            let idx = 0;
+            function tryLoad() {
                 if (idx >= urls.length) {
                     if (fallbackCanvasFn) {
-                        const fallbackTex = fallbackCanvasFn();
-                        if (fallbackTex) {
-                            tex.image = fallbackTex.image;
+                        const fb = fallbackCanvasFn();
+                        if (fb && fb.image) {
+                            tex.image = fb.image;
                             tex.needsUpdate = true;
                         }
                     }
                     return;
                 }
-                textureLoader.load(
-                    urls[idx],
-                    (loadedTex) => {
-                        tex.image = loadedTex.image;
-                        tex.wrapS = THREE.RepeatWrapping;
-                        tex.wrapT = THREE.RepeatWrapping;
-                        tex.repeat.set(repeatX, repeatY);
-                        tex.needsUpdate = true;
-                    },
-                    undefined,
-                    () => {
-                        tryIndex(idx + 1);
-                    }
-                );
+                const url = urls[idx++];
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    tex.image = img;
+                    tex.needsUpdate = true;
+                };
+                img.onerror = () => {
+                    tryLoad();
+                };
+                img.src = url;
             }
-
-            tryIndex(0);
+            tryLoad();
             return tex;
         }
 
@@ -733,17 +916,70 @@
             return new THREE.CanvasTexture(canvas);
         }
 
-        // Carga de Texturas de Assets
-        const floorTex = safeLoadTexture(['assets/images/texturas/piso de baldosa roja.png', 'assets/images/texturas/Piso de baldosas bordo.jpg', 'assets/images/texturas/piso.jpg'], createTileTexture, 10, 10);
-        const wallTex = safeLoadTexture(['assets/images/texturas/pared de ladrillo.png', 'assets/images/texturas/Pared de ladrillo.jpeg', 'assets/images/texturas/pared.jpg'], createBrickWallTexture, 6, 2);
-        const tableWoodTex = safeLoadTexture(['assets/images/texturas/Madera de mesa (parte superior).png', 'assets/images/texturas/Madera de mesa (parte superior).jpeg', 'assets/images/texturas/madera.jpg'], null, 1, 1);
-        const stoolWoodTex = safeLoadTexture(['assets/images/texturas/Madera de banqueta (parte superior).png', 'assets/images/texturas/Madera de banqueta (parte superior).jpeg'], null, 1, 1);
-        const metalLegsTex = safeLoadTexture('assets/images/texturas/Patas de mesas y sillas (fierros metal).png', null, 1, 3);
+        // Carga de Texturas de Assets (con nombres reales y formatos alternativos)
+        const floorTex = safeLoadTexture([
+            'assets/images/texturas/piso de baldosa roja.png',
+            'assets/images/texturas/piso de baldosa roja.jpg',
+            'assets/images/texturas/Piso de baldosas bordo.jpg',
+            'assets/images/texturas/piso.png'
+        ], createTileTexture, 10, 10);
 
-        const posterTex1 = safeLoadTexture(['assets/images/afiches/afiche 1.png', 'assets/images/afiches/Afiche 1.png'], () => createPosterTexture("FRANJA MORADA", "VOTA LISTA 3", "#1e3a8a"));
-        const posterTex2 = safeLoadTexture(['assets/images/afiches/afiche 2.png', 'assets/images/afiches/Afiche 2.png'], () => createPosterTexture("LA FUENTE", "UNIDAD FACU", "#991b1b"));
-        const posterTex3 = safeLoadTexture(['assets/images/afiches/afiche 3.png', 'assets/images/afiches/Afiche 3.png'], () => createPosterTexture("FAUD UNMDP", "ARQUITECTURA Y DISEÑO", "#0284c7"));
-        const posterTex4 = safeLoadTexture(['assets/images/afiches/afiche 4.png', 'assets/images/afiches/Afiche 4.png'], () => createPosterTexture("ASAMBLEA", "UNIVERSIDAD PUBLICA", "#b91c1c"));
+        const wallTex = safeLoadTexture([
+            'assets/images/texturas/pared de ladrillo.png',
+            'assets/images/texturas/pared de ladrillo.jpg',
+            'assets/images/texturas/Pared de ladrillo.jpeg',
+            'assets/images/texturas/pared.png'
+        ], createBrickWallTexture, 6, 2);
+
+        const tableWoodTex = safeLoadTexture([
+            'assets/images/texturas/Madera de mesa (parte superior).png',
+            'assets/images/texturas/Madera de mesa (parte superior).jpg',
+            'assets/images/texturas/Madera de mesa (parte superior).jpeg',
+            'assets/images/texturas/mesa.png'
+        ], null, 1, 1);
+
+        const stoolWoodTex = safeLoadTexture([
+            'assets/images/texturas/Madera de banqueta (parte superior).png',
+            'assets/images/texturas/Madera de banqueta (parte superior).jpg',
+            'assets/images/texturas/Madera de banqueta (parte superior).jpeg',
+            'assets/images/texturas/banqueta.png'
+        ], null, 1, 1);
+
+        const metalLegsTex = safeLoadTexture([
+            'assets/images/texturas/Patas de mesas y sillas (fierros metal).png',
+            'assets/images/texturas/Patas de mesas y sillas (fierros metal).jpg',
+            'assets/images/texturas/patas.png'
+        ], null, 1, 3);
+
+        const posterTex1 = safeLoadTexture([
+            'assets/images/afiches/afiche 1.png',
+            'assets/images/afiches/Afiche 1.png',
+            'assets/images/afiches/afiche 1.jpg'
+        ], () => createPosterTexture("FRANJA MORADA", "VOTA LISTA 3", "#1e3a8a"));
+
+        const posterTex2 = safeLoadTexture([
+            'assets/images/afiches/afiche 2.png',
+            'assets/images/afiches/Afiche 2.png',
+            'assets/images/afiches/afiche 2.jpg'
+        ], () => createPosterTexture("LA FUENTE", "UNIDAD FACU", "#991b1b"));
+
+        const posterTex3 = safeLoadTexture([
+            'assets/images/afiches/afiche 3.png',
+            'assets/images/afiches/Afiche 3.png',
+            'assets/images/afiches/afiche 3.jpg'
+        ], () => createPosterTexture("FAUD UNMDP", "ARQUITECTURA Y DISEÑO", "#0284c7"));
+
+        const posterTex4 = safeLoadTexture([
+            'assets/images/afiches/afiche 4.png',
+            'assets/images/afiches/Afiche 4.png',
+            'assets/images/afiches/afiche 4.jpg'
+        ], () => createPosterTexture("ASAMBLEA", "UNIVERSIDAD PUBLICA", "#b91c1c"));
+
+        const ceilingTex = safeLoadTexture([
+            'assets/images/texturas/techo.png',
+            'assets/images/texturas/techo.jpg',
+            'assets/images/texturas/Techo.png'
+        ], null, 6, 6);
 
         /* --- INICIALIZACIÓN 3D --- */
         function initEngine() {
@@ -755,6 +991,7 @@
 
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.set(0, player.height, 12);
+            scene.add(camera); // Permite renderizar viewmodel de manos en primera persona
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -766,10 +1003,13 @@
             raycaster = new THREE.Raycaster();
 
             // Iluminación
-            const ambient = new THREE.AmbientLight(0xffffff, 0.65);
+            const ambient = new THREE.AmbientLight(0xffffff, 0.70);
             scene.add(ambient);
 
-            const sun = new THREE.DirectionalLight(0xfffbeb, 0.85);
+            const hemi = new THREE.HemisphereLight(0xffffff, 0x444466, 0.55);
+            scene.add(hemi);
+
+            const sun = new THREE.DirectionalLight(0xfffbeb, 0.75);
             sun.position.set(10, 20, 10);
             sun.castShadow = true;
             scene.add(sun);
@@ -804,6 +1044,14 @@
             const wallS = new THREE.Mesh(wallGeo, wallMat); wallS.position.set(0, 3, 15); wallS.rotation.y = Math.PI; scene.add(wallS);
             const wallE = new THREE.Mesh(wallGeo, wallMat); wallE.position.set(15, 3, 0); wallE.rotation.y = -Math.PI/2; scene.add(wallE);
             const wallW = new THREE.Mesh(wallGeo, wallMat); wallW.position.set(-15, 3, 0); wallW.rotation.y = Math.PI/2; scene.add(wallW);
+
+            // Techo de la facultad (assets/images/texturas/techo.png)
+            const ceilingGeo = new THREE.PlaneGeometry(30, 30);
+            const ceilingMat = new THREE.MeshStandardMaterial({ map: ceilingTex, roughness: 0.85, side: THREE.DoubleSide });
+            const ceiling = new THREE.Mesh(ceilingGeo, ceilingMat);
+            ceiling.position.set(0, 6, 0);
+            ceiling.rotation.x = Math.PI / 2; // Cara mirando hacia el piso del taller
+            scene.add(ceiling);
 
             // Posters en Paredes (Afiches 1, 2, 3 y 4)
             const posterGeo = new THREE.PlaneGeometry(2.2, 3.0);
@@ -879,138 +1127,76 @@
             });
         }
 
-        /* --- CUERPO EN PRIMERA PERSONA (VISIBLE AL MIRAR HACIA ABAJO) --- */
+        /* --- CUERPO Y MANOS DEL JUGADOR EN PRIMERA PERSONA --- */
         function createPlayerBody() {
-            if (player.bodyMesh) scene.remove(player.bodyMesh);
-
-            const bodyGroup = new THREE.Group();
-
-            // Colores según personaje seleccionado
-            // P1: Remera Negra (0x18181b), Jeans Claros (0x60a5fa), Zapatillas Negras (0x09090b)
-            // P2: Buzo Negro (0x18181b), Pantalón Café (0x78573a), Zapatillas Bordó (0x881337)
-            const shirtMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.7 });
-            const pantsColor = selectedCharacter === 1 ? 0x60a5fa : 0x78573a;
-            const shoeColor = selectedCharacter === 1 ? 0x09090b : 0x881337;
-            const soleColor = selectedCharacter === 1 ? 0xffffff : 0xfda4af;
-
-            const pantsMat = new THREE.MeshStandardMaterial({ color: pantsColor, roughness: 0.8 });
-            const shoeMat = new THREE.MeshStandardMaterial({ color: shoeColor, roughness: 0.6 });
-            const soleMat = new THREE.MeshStandardMaterial({ color: soleColor, roughness: 0.5 });
-            const beltMat = new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.8 });
-
-            // 1. Torso y Pecho (Visible claramente al inclinar la vista hacia abajo)
-            const torso = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.44, 0.28), shirtMat);
-            torso.position.set(0, 1.25, -0.06);
-            torso.castShadow = true;
-            bodyGroup.add(torso);
-
-            // Cinturón / Cintura
-            const waist = new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.12, 0.27), beltMat);
-            waist.position.set(0, 1.0, -0.06);
-            bodyGroup.add(waist);
-
-            // Cadera
-            const hips = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.16, 0.26), pantsMat);
-            hips.position.set(0, 0.90, -0.06);
-            bodyGroup.add(hips);
-
-            // 2. Pierna y Pie Izquierdo (Pivote en la cadera para animación de paso)
-            const legLGroup = new THREE.Group();
-            legLGroup.position.set(-0.16, 0.90, -0.06);
-
-            const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.08, 0.82), pantsMat);
-            legL.position.set(0, -0.41, 0);
-            legL.castShadow = true;
-            legLGroup.add(legL);
-
-            // Zapatilla Izquierda con suela y detalles
-            const shoeLGroup = new THREE.Group();
-            shoeLGroup.position.set(0, -0.84, 0.06);
-            const shoeL = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.12, 0.34), shoeMat);
-            shoeL.castShadow = true;
-            const soleL = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.04, 0.35), soleMat);
-            soleL.position.y = -0.06;
-            shoeLGroup.add(shoeL);
-            shoeLGroup.add(soleL);
-            legLGroup.add(shoeLGroup);
-
-            bodyGroup.add(legLGroup);
-
-            // 3. Pierna y Pie Derecho
-            const legRGroup = new THREE.Group();
-            legRGroup.position.set(0.16, 0.90, -0.06);
-
-            const legR = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.08, 0.82), pantsMat);
-            legR.position.set(0, -0.41, 0);
-            legR.castShadow = true;
-            legRGroup.add(legR);
-
-            const shoeRGroup = new THREE.Group();
-            shoeRGroup.position.set(0, -0.84, 0.06);
-            const shoeR = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.12, 0.34), shoeMat);
-            shoeR.castShadow = true;
-            const soleR = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.04, 0.35), soleMat);
-            soleR.position.y = -0.06;
-            shoeRGroup.add(shoeR);
-            shoeRGroup.add(soleR);
-            legRGroup.add(shoeRGroup);
-
-            bodyGroup.add(legRGroup);
-
-            scene.add(bodyGroup);
-            player.bodyMesh = bodyGroup;
+            // Eliminamos la caja negra del torso que causaba obstrucción visual al caminar
+            if (player.bodyMesh) {
+                scene.remove(player.bodyMesh);
+                player.bodyMesh = null;
+            }
         }
 
         /* --- MANOS EN PRIMERA PERSONA CON VIEWMODEL Y GESTO DE AGARRE --- */
         function createPlayerHandsViewModel() {
-            if (player.handsMesh) camera.remove(player.handsMesh);
+            if (player.handsMesh) {
+                camera.remove(player.handsMesh);
+                player.handsMesh = null;
+            }
 
             const handsGroup = new THREE.Group();
-            const skinMat = new THREE.MeshStandardMaterial({ color: 0xfbcfe8, roughness: 0.5 });
-            const sleeveMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.7 });
+            
+            // Tono de piel cálido y realista con suave emisivo para que se vea bien iluminado en primera persona
+            const skinMat = new THREE.MeshStandardMaterial({ 
+                color: 0xf5cbb0, 
+                roughness: 0.55, 
+                metalness: 0.05,
+                emissive: 0x3d2015,
+                emissiveIntensity: 0.12
+            });
+
+            // Color de manga según personaje
+            const sleeveColor = selectedCharacter === 1 ? 0x18181b : 0x27272a;
+            const sleeveMat = new THREE.MeshStandardMaterial({ color: sleeveColor, roughness: 0.8 });
 
             function createHand(isRight) {
                 const handGroup = new THREE.Group();
 
-                // Brazo y Manga
-                if (selectedCharacter === 1) {
-                    // Personaje 1: Manga corta negra + antebrazo de piel
-                    const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.068, 0.18), sleeveMat);
-                    sleeve.rotation.x = Math.PI / 3;
-                    sleeve.position.set(0, 0.05, 0.1);
-                    handGroup.add(sleeve);
+                // Brazo / Manga inferior apuntando hacia el centro
+                const sleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.075, 0.28, 12), sleeveMat);
+                sleeve.position.set(0, -0.05, 0.10);
+                sleeve.rotation.x = Math.PI / 2.6;
+                handGroup.add(sleeve);
 
-                    const forearm = new THREE.Mesh(new THREE.CylinderGeometry(0.058, 0.05, 0.32), skinMat);
-                    forearm.rotation.x = Math.PI / 3;
-                    forearm.position.set(0, -0.08, -0.06);
-                    handGroup.add(forearm);
-                } else {
-                    // Personaje 2: Manga larga hoodie negra
-                    const longSleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.068, 0.062, 0.42), sleeveMat);
-                    longSleeve.rotation.x = Math.PI / 3;
-                    longSleeve.position.set(0, -0.04, 0);
-                    handGroup.add(longSleeve);
-                }
+                // Muñeca visible
+                const wrist = new THREE.Mesh(new THREE.CylinderGeometry(0.052, 0.058, 0.12, 12), skinMat);
+                wrist.position.set(0, -0.01, 0.01);
+                wrist.rotation.x = Math.PI / 2.6;
+                handGroup.add(wrist);
 
                 // Palma de la mano
-                const palm = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.035, 0.09), skinMat);
-                palm.position.set(0, -0.19, -0.22);
-                palm.rotation.x = 0.2;
+                const palm = new THREE.Mesh(new THREE.BoxGeometry(0.085, 0.038, 0.095), skinMat);
+                palm.position.set(0, 0.01, -0.09);
+                palm.rotation.x = 0.15;
+                palm.rotation.z = isRight ? -0.12 : 0.12;
                 handGroup.add(palm);
 
-                // Pulgar
-                const thumb = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.025, 0.05), skinMat);
-                thumb.position.set(isRight ? -0.045 : 0.045, -0.18, -0.20);
-                thumb.rotation.y = isRight ? -0.4 : 0.4;
+                // Pulgar natural
+                const thumb = new THREE.Mesh(new THREE.BoxGeometry(0.026, 0.026, 0.052), skinMat);
+                thumb.position.set(isRight ? -0.052 : 0.052, 0.02, -0.07);
+                thumb.rotation.y = isRight ? -0.45 : 0.45;
+                thumb.rotation.z = isRight ? -0.2 : 0.2;
                 handGroup.add(thumb);
 
-                // Dedos articulados para el gesto de agarre
+                // Dedos articulados para interacción y agarre
                 const fingersGroup = new THREE.Group();
-                fingersGroup.position.set(0, -0.19, -0.26);
+                fingersGroup.position.set(0, 0.01, -0.14);
 
-                const fingerMesh = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.03, 0.06), skinMat);
-                fingerMesh.position.set(0, 0, -0.03);
-                fingersGroup.add(fingerMesh);
+                [-0.032, -0.011, 0.011, 0.032].forEach((fx, idx) => {
+                    const fingerLen = (idx === 1 || idx === 2) ? 0.065 : 0.056;
+                    const finger = new THREE.Mesh(new THREE.BoxGeometry(0.018, 0.022, fingerLen), skinMat);
+                    finger.position.set(fx, 0, -fingerLen / 2);
+                    fingersGroup.add(finger);
+                });
 
                 handGroup.add(fingersGroup);
                 handGroup.userData.fingers = fingersGroup;
@@ -1018,14 +1204,18 @@
                 return handGroup;
             }
 
-            // Brazo Izquierdo
+            // Brazo Izquierdo (visible en cuadrante inferior izquierdo)
             const armL = createHand(false);
-            armL.position.set(-0.34, -0.22, -0.38);
+            armL.position.set(-0.25, -0.18, -0.38);
+            armL.rotation.y = 0.10;
+            armL.rotation.z = 0.06;
             handsGroup.add(armL);
 
-            // Brazo Derecho (Mano de interacción)
+            // Brazo Derecho (Mano de interacción/agarre, en cuadrante inferior derecho)
             const armR = createHand(true);
-            armR.position.set(0.34, -0.22, -0.38);
+            armR.position.set(0.25, -0.18, -0.38);
+            armR.rotation.y = -0.10;
+            armR.rotation.z = -0.06;
             handsGroup.add(armR);
 
             camera.add(handsGroup);
@@ -1037,85 +1227,57 @@
         }
 
         function updatePlayerBodyAndHands(delta, time, isMoving, isPushing) {
-            // --- 1. ACTUALIZAR CUERPO EN EL SUELO (TORSO Y PIERNAS) ---
-            if (player.bodyMesh) {
-                player.bodyMesh.position.set(camera.position.x, 0, camera.position.z);
-                player.bodyMesh.rotation.y = camera.rotation.y;
-
-                const torso = player.bodyMesh.children[0];
-                const legL = player.bodyMesh.children[3]; // legLGroup
-                const legR = player.bodyMesh.children[4]; // legRGroup
-
-                if (player.isCrouching) {
-                    player.bodyMesh.scale.set(1, 0.65, 1);
-                    if (legL) legL.rotation.x = 0.35;
-                    if (legR) legR.rotation.x = -0.35;
-                } else {
-                    player.bodyMesh.scale.set(1, 1, 1);
-
-                    if (isMoving && player.isGrounded) {
-                        const stepSpeed = keys.shift ? 14 : 9;
-                        const legSwing = Math.sin(time * stepSpeed * 0.001) * (keys.shift ? 0.65 : 0.45);
-
-                        if (legL) legL.rotation.x = legSwing;
-                        if (legR) legR.rotation.x = -legSwing;
-                        if (torso) torso.position.y = 1.25 + Math.abs(Math.sin(time * stepSpeed * 0.001)) * 0.02;
-                    } else {
-                        if (legL) legL.rotation.x = 0;
-                        if (legR) legR.rotation.x = 0;
-                        if (torso) torso.position.y = 1.25;
-                    }
-                }
-            }
-
-            // --- 2. ACTUALIZAR MANOS EN PRIMERA PERSONA ---
             if (!player.handsMesh) return;
             const armL = player.handsMesh.children[0];
             const armR = player.handsMesh.children[1];
+            if (!armL || !armR) return;
 
-            const breathe = Math.sin(time * 0.002) * 0.008;
+            const breathe = Math.sin(time * 0.002) * 0.005;
 
             if (isPushing) {
-                const pushCycle = Math.sin(time * 0.012) * 0.12;
-                armL.position.set(-0.25, -0.15, -0.45 + pushCycle);
-                armR.position.set(0.25, -0.15, -0.45 + pushCycle);
-                armL.rotation.x = 0.4; armR.rotation.x = 0.4;
+                const pushCycle = Math.sin(time * 0.012) * 0.08;
+                armL.position.set(-0.20, -0.14, -0.42 + pushCycle);
+                armR.position.set(0.20, -0.14, -0.42 + pushCycle);
+                armL.rotation.x = 0.35; armR.rotation.x = 0.35;
             } else if (player.isCrouching) {
-                armL.position.set(-0.32, -0.28, -0.32);
-                armR.position.set(0.32, -0.28, -0.32);
-                armL.rotation.x = -0.15; armR.rotation.x = -0.15;
+                armL.position.set(-0.24, -0.22, -0.34);
+                armR.position.set(0.24, -0.22, -0.34);
+                armL.rotation.x = -0.10; armR.rotation.x = -0.10;
             } else if (isMoving) {
-                const freq = keys.shift ? 13 : 8;
-                const amp = keys.shift ? 0.06 : 0.035;
-                const swing = Math.sin(time * 0.001 * freq) * amp;
+                // Balanceo rítmico y bobbing al caminar
+                const stepSpeed = keys.shift ? 13 : 8.5;
+                const amp = keys.shift ? 0.045 : 0.028;
+                const swing = Math.sin(time * 0.001 * stepSpeed) * amp;
+                const bobY = Math.abs(Math.sin(time * 0.001 * stepSpeed)) * 0.018;
 
-                armL.position.set(-0.34, -0.22 + breathe + swing, -0.38 + swing);
-                armR.position.set(0.34, -0.22 + breathe - swing, -0.38 - swing);
-                armL.rotation.x = swing * 2.2;
-                armR.rotation.x = -swing * 2.2;
+                armL.position.set(-0.25, -0.18 + breathe + bobY + swing * 0.5, -0.38 + swing);
+                armR.position.set(0.25, -0.18 + breathe + bobY - swing * 0.5, -0.38 - swing);
+                armL.rotation.x = swing * 2.0;
+                armR.rotation.x = -swing * 2.0;
             } else {
-                armL.position.set(-0.34, -0.22 + breathe, -0.38);
-                armR.position.set(0.34, -0.22 + breathe, -0.38);
-                armL.rotation.x = breathe * 0.5;
-                armR.rotation.x = breathe * 0.5;
+                // Respiración reposada
+                armL.position.set(-0.25, -0.18 + breathe, -0.38);
+                armR.position.set(0.25, -0.18 + breathe, -0.38);
+                armL.rotation.x = breathe * 0.4;
+                armR.rotation.x = breathe * 0.4;
             }
 
-            // --- 3. GESTO DE AGARRE (AL INTERACTUAR O RECOGER) ---
+            // Gesto de agarre dinámico al interactuar, recoger o tirar objetos
             if (player.grabProgress > 0) {
-                player.grabProgress -= delta * 3.8;
+                player.grabProgress -= delta * 4.0;
                 const p = Math.max(0, player.grabProgress);
                 const grabCurve = Math.sin((1.0 - p) * Math.PI);
 
-                // La mano derecha se extiende hacia adelante y al centro
-                armR.position.x += -0.18 * grabCurve;
-                armR.position.y += 0.12 * grabCurve;
-                armR.position.z += -0.25 * grabCurve;
-                armR.rotation.x += 0.6 * grabCurve;
-                armR.rotation.z += -0.3 * grabCurve;
+                // La mano derecha se adelanta hacia el centro para tomar el objeto
+                armR.position.x += -0.12 * grabCurve;
+                armR.position.y += 0.09 * grabCurve;
+                armR.position.z += -0.18 * grabCurve;
+                armR.rotation.x += 0.5 * grabCurve;
+                armR.rotation.z += -0.25 * grabCurve;
 
-                // Los dedos se curvan cerrando el puño
+                // Los dedos se cierran en puño agarrando
                 if (armR.userData && armR.userData.fingers) {
-                    armR.userData.fingers.rotation.x = 0.9 * grabCurve;
+                    armR.userData.fingers.rotation.x = 0.85 * grabCurve;
                 }
             } else if (armR.userData && armR.userData.fingers) {
                 armR.userData.fingers.rotation.x = 0;
@@ -1133,6 +1295,8 @@
             player.inventory = [];
             santiPickupCounter = 0;
             martuPickupCounter = 0;
+            marinaBlurElapsed = 0;
+            nextMarinaBlurInterval = 10; // Cada 10 segundos
             clearAnxietyBlur();
             updateInventoryHUD();
 
@@ -1148,7 +1312,7 @@
                 studentMesh.position.set(pos.x, 0, pos.z);
                 scene.add(studentMesh);
 
-                const reqCount = Math.floor(Math.random() * 3) + 2; // 2 a 4 cosas
+                const reqCount = Math.floor(Math.random() * 2) + 4; // Mínimo 4 cosas (4 o 5)
                 const requiredItems = [];
                 for (let i = 0; i < reqCount; i++) {
                     requiredItems.push(ITEMS_TYPES[Math.floor(Math.random() * ITEMS_TYPES.length)]);
@@ -1208,8 +1372,14 @@
             const lowerName = (name || '').toLowerCase();
 
             // 1. MATERIALES REALISTAS
-            const skinTone = lowerName.includes('cami') ? 0xf8d8c0 : (lowerName.includes('ale') ? 0xebb996 : 0xf1c6a7);
-            const skinMat = new THREE.MeshStandardMaterial({ color: skinTone, roughness: 0.54, metalness: 0.04 });
+            const skinTone = lowerName.includes('cami') ? 0xfde3ce : (lowerName.includes('ale') ? 0xf5cca8 : 0xfad6ba);
+            const skinMat = new THREE.MeshStandardMaterial({
+                color: skinTone,
+                emissive: skinTone,
+                emissiveIntensity: 0.16,
+                roughness: 0.48,
+                metalness: 0.0
+            });
             
             // Variaciones de jeans / pantalones con texturas tonales
             let pantsColor = 0x1e3a8a; // azul denim índigo
@@ -1484,63 +1654,79 @@
             });
 
             if (lowerName.includes('mateo')) {
-                // MATEO: Gorra moderna con visera curvada + pelo nuca y patillas
-                const nucaHair = new THREE.Mesh(new THREE.SphereGeometry(0.188, 14, 14, 0, Math.PI * 2, Math.PI / 2.2, Math.PI / 2), hairMat);
+                // MATEO: Gorra universitaria con rostro 100% visible y nuca/patillas prolijas
+                // Pelo solo en la nuca posterior (z <= 0)
+                const nucaHair = new THREE.Mesh(new THREE.SphereGeometry(0.188, 14, 14, Math.PI * 0.4, Math.PI * 1.2, Math.PI * 0.45, Math.PI * 0.45), hairMat);
+                nucaHair.position.set(0, -0.01, -0.02);
                 headGroup.add(nucaHair);
 
+                // Patillas al costado de las orejas (rostro despejado)
+                [-0.175, 0.175].forEach(px => {
+                    const sideburn = new THREE.Mesh(new THREE.BoxGeometry(0.018, 0.08, 0.035), hairMat);
+                    sideburn.position.set(px, -0.02, 0.01);
+                    headGroup.add(sideburn);
+                });
+
                 const capMat = new THREE.MeshStandardMaterial({ color: 0xb45309, roughness: 0.6 }); // gorra ocre universitaria
-                const capCrown = new THREE.Mesh(new THREE.SphereGeometry(0.198, 18, 16, 0, Math.PI * 2, 0, Math.PI / 2), capMat);
-                capCrown.position.y = 0.025; headGroup.add(capCrown);
-                // Visera estructurada con curvatura
-                const capVisor = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.022, 0.16), capMat);
-                capVisor.position.set(0, 0.035, 0.23); capVisor.rotation.x = 0.12; headGroup.add(capVisor);
-                const capBtn = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 8), capMat);
-                capBtn.position.set(0, 0.22, 0); headGroup.add(capBtn);
+                // Corona de la gorra (solo cúpula superior)
+                const capCrown = new THREE.Mesh(new THREE.SphereGeometry(0.192, 18, 16, 0, Math.PI * 2, 0, Math.PI * 0.36), capMat);
+                capCrown.position.set(0, 0.05, -0.02);
+                headGroup.add(capCrown);
+
+                // Visera inclinada hacia arriba para que no haga sombra en los ojos
+                const capVisor = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.018, 0.14), capMat);
+                capVisor.position.set(0, 0.08, 0.14);
+                capVisor.rotation.x = -0.15;
+                headGroup.add(capVisor);
+
+                const capBtn = new THREE.Mesh(new THREE.SphereGeometry(0.016, 8, 8), capMat);
+                capBtn.position.set(0, 0.22, -0.02);
+                headGroup.add(capBtn);
 
             } else if (lowerName.includes('cami')) {
-                // CAMI: Cabello largo ondulado con mechas que caen al frente + vincha
-                const hairTop = new THREE.Mesh(new THREE.SphereGeometry(0.205, 18, 18), hairMat);
-                hairTop.position.set(0, 0.04, -0.02); headGroup.add(hairTop);
+                // CAMI: Cabello largo ondulado con vincha (rostro despejado)
+                const hairTop = new THREE.Mesh(new THREE.SphereGeometry(0.192, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.38), hairMat);
+                hairTop.position.set(0, 0.04, -0.03); headGroup.add(hairTop);
                 // Vincha
                 const headband = new THREE.Mesh(new THREE.TorusGeometry(0.19, 0.018, 8, 24), new THREE.MeshStandardMaterial({ color: 0xf43f5e }));
-                headband.rotation.x = Math.PI / 2.3; headband.position.set(0, 0.06, 0); headGroup.add(headband);
-                // Mechones que caen al pecho
-                [-0.13, 0.13].forEach(x => {
-                    const lock = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.022, 0.46, 10), hairMat);
-                    lock.position.set(x, -0.16, 0.09); headGroup.add(lock);
+                headband.rotation.x = Math.PI / 2.3; headband.position.set(0, 0.07, 0.01); headGroup.add(headband);
+                // Mechones laterales a los lados de los hombros (no tapan la cara)
+                [-0.15, 0.15].forEach(x => {
+                    const lock = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.02, 0.45, 8), hairMat);
+                    lock.position.set(x, -0.16, 0.03); headGroup.add(lock);
                 });
-                const hairBack = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.52, 0.14), hairMat);
-                hairBack.position.set(0, -0.19, -0.12); headGroup.add(hairBack);
+                const hairBack = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.50, 0.12), hairMat);
+                hairBack.position.set(0, -0.18, -0.13); headGroup.add(hairBack);
 
             } else if (lowerName.includes('mica') || lowerName.includes('lucia')) {
-                // MICA / LUCÍA: Cabello largo en capas con volumen
-                const hairTop = new THREE.Mesh(new THREE.SphereGeometry(0.208, 18, 18), hairMat);
-                hairTop.position.set(0, 0.04, -0.02); headGroup.add(hairTop);
-                [-0.14, 0.14].forEach(x => {
-                    const lock = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.025, 0.50, 10), hairMat);
-                    lock.position.set(x, -0.18, 0.07); headGroup.add(lock);
+                // MICA / LUCÍA: Cabello largo en capas hacia atrás
+                const hairTop = new THREE.Mesh(new THREE.SphereGeometry(0.192, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.38), hairMat);
+                hairTop.position.set(0, 0.04, -0.03); headGroup.add(hairTop);
+                [-0.15, 0.15].forEach(x => {
+                    const lock = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.022, 0.48, 8), hairMat);
+                    lock.position.set(x, -0.18, 0.03); headGroup.add(lock);
                 });
-                const hairBack = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.56, 0.15), hairMat);
-                hairBack.position.set(0, -0.21, -0.13); headGroup.add(hairBack);
+                const hairBack = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.54, 0.13), hairMat);
+                hairBack.position.set(0, -0.20, -0.13); headGroup.add(hairBack);
 
             } else if (lowerName.includes('ale') || lowerName.includes('nico')) {
-                // ALE / NICO: Peinado quiff con volumen + Barba prolija recortada
-                const hairTop = new THREE.Mesh(new THREE.SphereGeometry(0.205, 18, 18), hairMat);
-                hairTop.position.set(0, 0.06, -0.01); headGroup.add(hairTop);
-                const pomp = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.09, 0.15), hairMat);
-                pomp.position.set(0, 0.23, 0.06); headGroup.add(pomp);
-                // Barba prolija en la mandíbula
-                const beard = new THREE.Mesh(new THREE.CylinderGeometry(0.175, 0.145, 0.12, 14, 1, false, 0, Math.PI), hairMat);
-                beard.position.set(0, -0.07, 0.05); headGroup.add(beard);
+                // ALE / NICO: Peinado quiff con volumen superior + Barba prolija en mentón
+                const hairTop = new THREE.Mesh(new THREE.SphereGeometry(0.190, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.36), hairMat);
+                hairTop.position.set(0, 0.04, -0.03); headGroup.add(hairTop);
+                const pomp = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.07, 0.12), hairMat);
+                pomp.position.set(0, 0.21, 0.02); headGroup.add(pomp);
+                // Barba prolija en la mandíbula inferior
+                const beard = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.07, 0.07, 12, 1, false, 0, Math.PI), hairMat);
+                beard.position.set(0, -0.09, 0.06); beard.rotation.x = 0.2; headGroup.add(beard);
 
-            } else if (lowerName.includes('pli') || lowerName.includes('santi')) {
-                // PLI: Pelo rizado/afro con textura tridimensional + Auriculares de estudio al cuello
-                const afroCenter = new THREE.Mesh(new THREE.SphereGeometry(0.215, 18, 18), hairMat);
-                afroCenter.position.set(0, 0.06, -0.01); headGroup.add(afroCenter);
-                for (let r = 0; r < 12; r++) {
-                    const curl = new THREE.Mesh(new THREE.SphereGeometry(0.062, 8, 8), hairMat);
-                    const ang = (r / 12) * Math.PI * 2;
-                    curl.position.set(Math.cos(ang) * 0.165, 0.13 + (r % 2) * 0.04, Math.sin(ang) * 0.165);
+            } else if (lowerName.includes('pli') || lowerName.includes('santi') || lowerName.includes('sofia')) {
+                // PLI / SOFÍA: Rulos con textura alrededor del cráneo + Auriculares de estudio al cuello
+                const afroCenter = new THREE.Mesh(new THREE.SphereGeometry(0.195, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.42), hairMat);
+                afroCenter.position.set(0, 0.05, -0.04); headGroup.add(afroCenter);
+                for (let r = 0; r < 10; r++) {
+                    const curl = new THREE.Mesh(new THREE.SphereGeometry(0.052, 6, 6), hairMat);
+                    const ang = (r / 10) * Math.PI * 2;
+                    curl.position.set(Math.cos(ang) * 0.155, 0.14 + (r % 2) * 0.03, Math.min(0.03, Math.sin(ang) * 0.155 - 0.02));
                     headGroup.add(curl);
                 }
                 // Auriculares profesionales de diseño al cuello
@@ -1553,9 +1739,11 @@
                 });
 
             } else {
-                // Cabello corto moderno con raya al costado
-                const hairTop = new THREE.Mesh(new THREE.SphereGeometry(0.202, 18, 18), hairMat);
-                hairTop.position.set(0, 0.04, -0.02); headGroup.add(hairTop);
+                // Cabello corto moderno con rostro despejado
+                const hairTop = new THREE.Mesh(new THREE.SphereGeometry(0.190, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.38), hairMat);
+                hairTop.position.set(0, 0.04, -0.03); headGroup.add(hairTop);
+                const hairBack = new THREE.Mesh(new THREE.SphereGeometry(0.188, 14, 12, 0, Math.PI * 2, Math.PI * 0.4, Math.PI * 0.4), hairMat);
+                hairBack.position.set(0, 0.0, -0.04); headGroup.add(hairBack);
             }
 
             group.add(headGroup);
@@ -1594,49 +1782,131 @@
         }
 
         function spawnWorldItems() {
+            worldItems.forEach(i => scene.remove(i.mesh));
+            worldItems = [];
+
             const totalNeeded = {};
             targetStudents.forEach(s => {
                 s.requiredItems.forEach(item => { totalNeeded[item.id] = (totalNeeded[item.id] || 0) + 1; });
             });
 
+            // Recolectar lista plana de todos los materiales a generar
+            const itemsToSpawn = [];
             Object.keys(totalNeeded).forEach(itemId => {
                 const count = totalNeeded[itemId] + 2;
                 const itemDef = ITEMS_TYPES.find(i => i.id === itemId);
-
                 for (let c = 0; c < count; c++) {
-                    const itemMesh = createItemMesh(itemDef);
-                    let x = (Math.random() - 0.5) * 24;
-                    let z = (Math.random() - 0.5) * 24;
-                    let y = 0.1;
+                    itemsToSpawn.push(itemDef);
+                }
+            });
 
-                    // Colocar sobre mesas, debajo o en el piso
-                    if (Math.random() > 0.4 && pushableObjects.length > 0) {
-                        const table = pushableObjects.find(p => p.type === 'table');
-                        if (table) {
-                            x = table.mesh.position.x + (Math.random() - 0.5) * 1.2;
-                            z = table.mesh.position.z + (Math.random() - 0.5) * 1.2;
-                            y = table.height + 0.05;
-                        }
-                    }
+            // Mezclar para alternar tipos de materiales
+            for (let i = itemsToSpawn.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [itemsToSpawn[i], itemsToSpawn[j]] = [itemsToSpawn[j], itemsToSpawn[i]];
+            }
+
+            const tables = pushableObjects.filter(p => p.type === 'table');
+            const occupiedSpots = [];
+
+            function isFarEnough(x, z, minDist) {
+                for (let spot of occupiedSpots) {
+                    const dx = spot.x - x;
+                    const dz = spot.z - z;
+                    if (dx * dx + dz * dz < minDist * minDist) return false;
+                }
+                for (let st of targetStudents) {
+                    const dx = st.mesh.position.x - x;
+                    const dz = st.mesh.position.z - z;
+                    if (dx * dx + dz * dz < 1.8 * 1.8) return false;
+                }
+                return true;
+            }
+
+            let itemIdx = 0;
+
+            // 1. Distribuir sobre todas las mesas de forma pareja (1 o 2 por mesa, en extremos opuestos)
+            tables.forEach(table => {
+                const itemsOnTable = Math.min(2, itemsToSpawn.length - itemIdx);
+                for (let it = 0; it < itemsOnTable && itemIdx < itemsToSpawn.length; it++) {
+                    const itemDef = itemsToSpawn[itemIdx++];
+                    const itemMesh = createItemMesh(itemDef);
+                    const angle = (it === 0) ? (Math.random() * Math.PI) : (Math.random() * Math.PI + Math.PI);
+                    const radius = 0.4 + Math.random() * 0.45;
+                    const x = table.mesh.position.x + Math.cos(angle) * radius;
+                    const z = table.mesh.position.z + Math.sin(angle) * radius;
+                    const y = table.height + 0.05;
 
                     itemMesh.position.set(x, y, z);
                     scene.add(itemMesh);
                     worldItems.push({ mesh: itemMesh, data: itemDef });
+                    occupiedSpots.push({ x, z });
                 }
             });
+
+            // 2. Distribuir el resto de los materiales por todo el piso del taller (bien distribuidos)
+            while (itemIdx < itemsToSpawn.length) {
+                const itemDef = itemsToSpawn[itemIdx++];
+                const itemMesh = createItemMesh(itemDef);
+
+                let placed = false;
+                let attempts = 0;
+                let x = 0, z = 0, y = 0.1;
+
+                while (!placed && attempts < 100) {
+                    attempts++;
+                    // Espacio total del taller: -13 a +13
+                    x = (Math.random() - 0.5) * 25;
+                    z = (Math.random() - 0.5) * 25;
+                    const minDist = attempts < 50 ? 2.2 : 1.4;
+
+                    if (isFarEnough(x, z, minDist)) {
+                        placed = true;
+                    }
+                }
+
+                itemMesh.position.set(x, y, z);
+                scene.add(itemMesh);
+                worldItems.push({ mesh: itemMesh, data: itemDef });
+                occupiedSpots.push({ x, z });
+            }
         }
 
         function createItemMesh(itemDef) {
             const group = new THREE.Group();
-            let geo;
-            if (itemDef.id === 'tijera') geo = new THREE.TorusGeometry(0.12, 0.03, 8, 16);
-            else if (itemDef.id === 'regla') geo = new THREE.BoxGeometry(0.5, 0.02, 0.1);
-            else if (itemDef.id === 'lapiz') geo = new THREE.CylinderGeometry(0.03, 0.03, 0.4);
-            else if (itemDef.id === 'telgopor') geo = new THREE.BoxGeometry(0.3, 0.2, 0.3);
-            else geo = new THREE.BoxGeometry(0.4, 0.05, 0.4);
 
-            const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: itemDef.color, roughness: 0.3 }));
-            mesh.castShadow = true; group.add(mesh);
+            // Textura desde carpeta de assets de materiales (assets/images/materiales/)
+            const itemTex = safeLoadTexture([
+                `assets/images/materiales/${itemDef.id}.png`,
+                `assets/images/materiales/${itemDef.id}.jpg`,
+                `assets/images/materiales/${itemDef.id}.jpeg`,
+                `assets/images/materiales/${itemDef.id}.webp`
+            ], null);
+
+            // Sprite 3D nítido y vertical que siempre mira al jugador, sin deformaciones ni tintes raros
+            const spriteMat = new THREE.SpriteMaterial({ 
+                map: itemTex, 
+                transparent: true, 
+                alphaTest: 0.05, 
+                color: 0xffffff, // Sin alterar el color de la foto subida
+                opacity: 1.0,
+                depthWrite: false
+            });
+            const sprite = new THREE.Sprite(spriteMat);
+            const scaleX = (itemDef.id === 'regla' || itemDef.id === 'carton') ? 0.55 : 0.46;
+            const scaleY = (itemDef.id === 'lapiz') ? 0.52 : 0.46;
+            sprite.scale.set(scaleX, scaleY, 1);
+            sprite.position.y = 0.26;
+            group.add(sprite);
+
+            // Sombra suave en el suelo o sobre la mesa para un anclaje visual natural
+            const shadowGeo = new THREE.CircleGeometry(0.18, 16);
+            const shadowMat = new THREE.MeshBasicMaterial({ color: 0x070b14, transparent: true, opacity: 0.32, depthWrite: false });
+            const shadow = new THREE.Mesh(shadowGeo, shadowMat);
+            shadow.rotation.x = -Math.PI / 2;
+            shadow.position.y = 0.01;
+            group.add(shadow);
+
             return group;
         }
 
@@ -1788,15 +2058,15 @@
             if (!container) return;
             container.classList.add('anxiety-blur');
             playSound('heartbeat');
-            setTimeout(() => playSound('heartbeat'), 200);
+            setTimeout(() => playSound('heartbeat'), 220);
 
-            showNotification("¡Ansiedad! Martu empieza a ver borroso...", "fa-eye-slash");
+            showNotification("¡Ansiedad de Martina! Visión borrosa por 2 segundos...", "fa-eye-slash");
 
             if (anxietyBlurTimeout) clearTimeout(anxietyBlurTimeout);
             anxietyBlurTimeout = setTimeout(() => {
                 if (container) container.classList.remove('anxiety-blur');
                 anxietyBlurTimeout = null;
-            }, 1350);
+            }, 2000); // 2 segundos de duración exacta
         }
 
         function clearAnxietyBlur() {
@@ -1820,11 +2090,14 @@
                 timeRemaining--;
                 updateTimerDisplay();
 
-                // RASGO PERSONAJE 2 (MARTU - ANSIOSA):
-                // Cuando queda poco tiempo (20 segundos o menos), la ansiedad hace que vea borroso por instantes cortos
-                if (selectedCharacter === 2 && timeRemaining <= 20 && timeRemaining > 0) {
-                    if (timeRemaining === 20 || timeRemaining === 16 || timeRemaining === 12 || timeRemaining === 8 || timeRemaining === 5 || timeRemaining === 2) {
+                // RASGO PERSONAJE 2 (MARTINA / MARINA - ANSIOSA):
+                // Ve borroso a lo largo de toda la partida en intervalos de 10 segundos, por 2 segundos
+                if (selectedCharacter === 2 && timeRemaining > 0) {
+                    marinaBlurElapsed++;
+                    if (marinaBlurElapsed >= nextMarinaBlurInterval) {
                         triggerAnxietyBlur();
+                        marinaBlurElapsed = 0;
+                        nextMarinaBlurInterval = 10; // Cada 10 segundos exactos
                     }
                 }
 
@@ -2337,7 +2610,7 @@
         window.onload = function () {
             initEngine();
 
-            window.initAudio = () => {
+            const initAudio = () => {
                 if (!audioCtx) audioCtx = new AudioCtx();
             };
 
@@ -2346,12 +2619,14 @@
             const viewChar = document.getElementById('view-character');
             const viewSettings = document.getElementById('view-settings');
             const viewControls = document.getElementById('view-controls');
+            const viewQuit = document.getElementById('view-quit-confirm');
 
             function hideAllMenuViews() {
                 menuOptions.classList.add('hidden');
                 viewChar.classList.add('hidden'); viewChar.classList.remove('flex');
                 viewSettings.classList.add('hidden'); viewSettings.classList.remove('flex');
                 viewControls.classList.add('hidden'); viewControls.classList.remove('flex');
+                if (viewQuit) { viewQuit.classList.add('hidden'); viewQuit.classList.remove('flex'); }
             }
 
             function showMenuView(viewEl) {
@@ -2373,6 +2648,38 @@
                 showMenuView(viewControls);
             });
 
+            const btnMenuQuit = document.getElementById('btn-menu-quit');
+            if (btnMenuQuit) {
+                btnMenuQuit.addEventListener('click', () => {
+                    showMenuView(viewQuit);
+                });
+            }
+
+            const btnQuitNo = document.getElementById('btn-quit-no');
+            if (btnQuitNo) {
+                btnQuitNo.addEventListener('click', () => {
+                    hideAllMenuViews();
+                    menuOptions.classList.remove('hidden');
+                });
+            }
+
+            const btnQuitYes = document.getElementById('btn-quit-yes');
+            if (btnQuitYes) {
+                btnQuitYes.addEventListener('click', () => {
+                    try {
+                        window.open('', '_self', '');
+                        window.close();
+                    } catch(e) {}
+                    document.body.innerHTML = `
+                        <div style="height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0b0f19;color:#fff;font-family:Segoe UI, sans-serif;text-align:center;padding:24px;">
+                            <div style="font-size:54px;margin-bottom:16px;">🎓</div>
+                            <h1 style="font-size:32px;font-weight:900;color:#818cf8;margin-bottom:8px;">JUEGO CERRADO</h1>
+                            <p style="color:#94a3b8;font-size:16px;max-width:400px;line-height:1.5;">Has salido de Misión: Escape Facultativo. Ya podés cerrar esta pestaña o ventana de tu navegador.</p>
+                        </div>
+                    `;
+                });
+            }
+
             document.getElementById('btn-back-from-char').addEventListener('click', () => {
                 hideAllMenuViews(); menuOptions.classList.remove('hidden');
             });
@@ -2385,7 +2692,7 @@
                 hideAllMenuViews(); menuOptions.classList.remove('hidden');
             });
 
-            // Seleccionar Personaje: Santi (1) o Martu (2)
+            // Seleccionar Personaje: Santi (1) o Martu / Marina (2)
             const cardP1 = document.getElementById('btn-select-p1');
             const cardP2 = document.getElementById('btn-select-p2');
             const traitBanner = document.getElementById('char-trait-info');
@@ -2413,10 +2720,10 @@
                     traitBanner.className = "w-full bg-rose-950/70 border border-rose-500/80 rounded-xl p-2.5 text-left flex items-start gap-2.5 shadow-md backdrop-blur transition-all duration-300";
                     traitIcon.className = "fa-solid fa-eye-slash text-xl text-rose-400 mt-0.5 shrink-0";
                     traitTitle.className = "text-[11px] font-black text-rose-300 uppercase tracking-wider";
-                    traitTitle.innerText = "Mecánica de Martu: Ansiosa";
+                    traitTitle.innerText = "Mecánica de Martina: Ansiosa";
                     traitDesc.className = "text-[11px] text-rose-100/90 font-medium leading-snug";
-                    traitDesc.innerText = "Martu sufre de ansiedad con el reloj: cuando queden 20 segundos o menos para entregar los útiles, el pánico y la ansiedad harán que empiece a ver borroso por instantes cortos.";
-                    if (btnConfirmText) btnConfirmText.innerText = "¡JUGAR CON MARTU!";
+                    traitDesc.innerText = "Martina sufre de ansiedad: a lo largo de la partida tiene episodios donde ve borroso por 2 segundos en intervalos de al menos 15 segundos.";
+                    if (btnConfirmText) btnConfirmText.innerText = "¡JUGAR CON MARTINA!";
                 }
             }
 
@@ -2475,12 +2782,32 @@
                 document.getElementById('canvas-container').requestPointerLock();
             });
 
+            // Ganaste: Botón VOLVER A JUGAR -> Lleva de nuevo a elegir personaje
             document.getElementById('btn-restart-win').addEventListener('click', () => {
                 document.getElementById('win-screen').classList.add('hidden');
                 document.getElementById('win-screen').classList.remove('flex');
-                setupLevel1();
-                document.getElementById('canvas-container').requestPointerLock();
+                document.exitPointerLock();
+                const startScreen = document.getElementById('start-screen');
+                startScreen.classList.remove('hidden');
+                startScreen.classList.add('flex');
+                showMenuView(viewChar);
+                updateCharacterSelectionUI();
             });
+
+            // Ganaste: Botón Volver al menu principal
+            const btnWinMenu = document.getElementById('btn-win-menu');
+            if (btnWinMenu) {
+                btnWinMenu.addEventListener('click', () => {
+                    document.getElementById('win-screen').classList.add('hidden');
+                    document.getElementById('win-screen').classList.remove('flex');
+                    document.exitPointerLock();
+                    const startScreen = document.getElementById('start-screen');
+                    startScreen.classList.remove('hidden');
+                    startScreen.classList.add('flex');
+                    hideAllMenuViews();
+                    menuOptions.classList.remove('hidden');
+                });
+            }
         };
     </script>
 </body>
